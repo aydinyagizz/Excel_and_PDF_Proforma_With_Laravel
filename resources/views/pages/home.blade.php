@@ -4,19 +4,21 @@
 @endsection
 
 @section('css')
+
 @endsection
 
 @section('content')
 
     <div class="col-md-6">
     <br>
-    <a href="{{ route('admin.export') }}" class="btn btn-primary">Excel oluştur</a>
+{{--    <a href="{{ route('admin.export') }}" class="btn btn-primary">Excel oluştur</a>--}}
     <br>
         <hr>
     <form action="{{ route('admin.import') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="file" name="import_file"><br>
         <input type="submit" class="btn btn-primary" value="Değişiklikleri içe aktar">
+
 
     </form>
         <br>
@@ -56,4 +58,10 @@
 @endsection
 
 @section('js')
+
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        } );
+    </script>
 @endsection

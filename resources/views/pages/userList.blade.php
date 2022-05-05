@@ -46,15 +46,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $say=1;
-
-
-                            @endphp
+                        @php
+                        $say = ($user->currentpage()-1)* $user->perpage() + 1;
+                        @endphp
                             @foreach($user as $userItem)
 
                             <tr>
-                                <td>{{$say}}</td>
+                                <td>{{$say++}}</td>
                                 <td> {{$userItem->name}} </td>
                                 <td> {{$userItem->email}} </td>
                                 <td>
@@ -66,9 +64,7 @@
                                 <td><a href="{{url('userDelete/'.$userItem->id)}}"><i class="fa fa-trash-o"></i> </a></td>
 
                             </tr>
-                            @php
-                                $say++;
-                            @endphp
+
                             @endforeach
                         </tbody>
                     </table>

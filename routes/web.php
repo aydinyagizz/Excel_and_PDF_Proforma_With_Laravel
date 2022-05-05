@@ -46,6 +46,7 @@ Route::prefix('/')->middleware('auth')->group(function () {
 
 
     Route::get('faturaListele', [FaturaController::class, 'faturaListele'])->name('admin.faturaListele');
+    Route::post('faturaDetayGetir', [FaturaController::class, 'faturaDetayGetir'])->name('admin.faturaDetayGetir');
     Route::get('faturaEkle', [FaturaController::class, 'faturaEkle'])->name('admin.faturaEkle');
     Route::post('faturaAdd', [FaturaController::class, 'faturaAdd'])->name('admin.faturaAdd');
     Route::get('faturaDelete/{id}', [FaturaController::class, 'faturaDelete'])->name('admin.faturaDelete');

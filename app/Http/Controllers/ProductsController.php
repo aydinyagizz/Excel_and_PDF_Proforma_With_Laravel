@@ -27,7 +27,8 @@ class ProductsController extends Controller
         }
 
         $data = [
-            'urun' => Products::all(),
+//            'urun' => Products::all(),
+            'urun' => Products::orderBy('id', 'desc')->paginate(10),
         ];
 
         return view('pages.urunEkle', $data);

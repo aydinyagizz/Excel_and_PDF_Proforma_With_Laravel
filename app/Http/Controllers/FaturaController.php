@@ -9,6 +9,7 @@ use App\Models\Teklif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 
 class FaturaController extends Controller
@@ -20,6 +21,16 @@ class FaturaController extends Controller
 
         $fatura = Fatura::orderBy('id', 'desc')->paginate(10);
         return view('pages.faturaListele', compact('fatura'));
+    }
+
+    public function faturaDetayGetir(Request $request){
+
+
+        $data = [
+            'urunDetay' => Products::all()->where('id','==',$request->id)->first(),
+        ];
+
+        return response()->json($data,200);
     }
 
     public function faturaEkle(Request $request)
@@ -35,21 +46,6 @@ class FaturaController extends Controller
 
     public function faturaAdd(Request $request)
     {
-//        dd($request);
-        //TODO: burası düzenlenecek
-//        foreach($request->request as $key) {
-//            $aa = $request->input('siparisOzellik');
-//            $aa = $request->miktar;
-//
-//        }
-//        print_r($aa);
-//        die();
-////dd($request->request);
-//        print_r(($request->miktar));
-//        die();
-//        dd($request->input()['siparisOzellik'.$i]);
-//
-
 
         $randomSayi = $this->generateRegistrationId();
 
@@ -67,9 +63,22 @@ class FaturaController extends Controller
 //        foreach($request->request as $key) {
         for ($i=0; $i<count($request->siparisOzellik); $i++){
 
-            echo $request->siparisOzellik[$i];
+            if ($request->siparisOzellik[$i] == 'Seçiniz'){
+                return Redirect::to('faturaEkle')->withErrors('Lütfen ürün seçiniz');
+            }
+
+            //$urunDetay = Products::all()->where('id','==',$request->siparisOzellik[$i]);
+            $urunDetay = Products::find($request->siparisOzellik[$i]);
+
+
+            //dd($urunDetay);
+            //echo $request->siparisOzellik[$i];
             $teklif = new Teklif();
-            $teklif->siparisOzellik = $request->siparisOzellik[$i];
+            //$teklif->siparisOzellik = $request->siparisOzellik[$i];
+    
+            $teklif->siparisOzellik = $urunDetay->siparisOzellik;
+
+            //dd(($urunDetay->siparisOzellik[$i]));
 
             $teklif->miktar = $request->miktar[$i];
             $teklif->fatura_id  = $fatura->id;
@@ -79,29 +88,6 @@ class FaturaController extends Controller
             $teklif->save();
 
         }
-
-//            $teklif = new Teklif();
-//            $teklif->siparisOzellik = $request->input('siparisOzellik');
-//
-//            $teklif->miktar = $request->input('miktar');
-//            $teklif->fatura_id  = $fatura->id;
-//            $teklif->birim = $request->input('birim');
-//
-//            $teklif->save();
-
-
-//          Teklif::create([
-//               $teklif->siparisOzellik = $request->input('siparisOzellik'),
-//               $teklif->miktar  => $request->input('miktar'),
-//               $teklif->fatura_id  => $fatura->id,
-//               $teklif->birim  => $request->input('birim'),
-//            ]);
-
-//        }
-//        Teklif::insert();
-
-
-
 
         //return redirect()->route('admin.faturaEkle', compact('fatura'));
         return redirect('teklifEkle/' . $fatura->id);

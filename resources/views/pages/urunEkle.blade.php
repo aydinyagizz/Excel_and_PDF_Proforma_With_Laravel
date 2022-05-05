@@ -35,9 +35,16 @@
         </div>
         <div class="box-body">
             {{--            <form action="{{route('admin.teklifEkle')}}" method="POST">--}}
+
+            <form action="{{ route('admin.import') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <label type="text">Excelden ürün ekle</label>
+                <input type="file" name="import_file"><br>
+                <input type="submit" class="btn btn-primary" value="Değişiklikleri içe aktar">
+                <br>
+            </form>
             <form action="{{url('urunEkle')}}" method="POST">
                 @csrf
-
 
                 <div class="box-footer clearfix no-border form-group">
                     <div class="row">
@@ -92,41 +99,43 @@
                         <th>Birim</th>
                         <th>Malzeme Fiyatı</th>
                         <th>Ürün Tutar</th>
-                        <th>Ekleme Tarihi</th>
+
                         <th></th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    @php
-                        $say=1;
-                    @endphp
-                    @foreach($urun as $urun)
 
+                    @php
+                    $say = ($urun->currentpage()-1)* $urun->perpage() + 1;
+                    @endphp
+                    @foreach($urun as $urunItem)
                         <tr>
-                            <td>{{$say}}</td>
-                            <td> {{$urun->siparisOzellik}} </td>
-                            <td> {{$urun->miktar}} </td>
-                            <td> {{$urun->birim}} </td>
-                            <td> {{$urun->malzemeFiyati}} </td>
-                            <td> {{number_format((($urun->miktar)*($urun->malzemeFiyati)),2)}} </td>
-                            <td> {{($urun->created_at)->format('d/m/Y')}} </td>
+                            <td><b>{{$say++}}</b></td>
+                            <td> {{$urunItem->siparisOzellik}} </td>
+                            <td> {{$urunItem->miktar}} </td>
+                            <td> {{$urunItem->birim}} </td>
+                            <td> {{$urunItem->malzemeFiyati}} </td>
+                            <td> {{number_format((($urunItem->miktar)*($urunItem->malzemeFiyati)),2)}} </td>
+{{--                            <td> {{($urunItem->created_at)->format('d/m/Y')}} </td>--}}
                             {{--                            <td><a href="teklifEdit/{{$teklif->id}}"><i class="fa fa-edit"></i></a> </td>--}}
-                            <td><a href="{{url('urunEdit/'.$urun->id)}}"><i class="fa fa-edit"></i></a></td>
-                            <td><a href="{{url('urunDelete/'.$urun->id)}}"><i class="fa fa-trash-o"></i> </a>
+                            <td><a href="{{url('urunEdit/'.$urunItem->id)}}"><i class="fa fa-edit"></i></a></td>
+                            <td><a href="{{url('urunDelete/'.$urunItem->id)}}"><i class="fa fa-trash-o"></i> </a>
                             </td>
                         </tr>
-                        @php
-                            $say++;
-                        @endphp
+
+
                     @endforeach
                     </tbody>
-
                 </table>
-            </li>
 
+            </li>
         </ul>
     </div>
+    <div class="text-center">
+        {!! $urun->links() !!}
+    </div>
+
 
 
 

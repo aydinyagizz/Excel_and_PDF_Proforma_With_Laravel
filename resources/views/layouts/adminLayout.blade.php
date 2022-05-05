@@ -10,21 +10,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>@yield("title")</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="{{asset("assets/bower_components/bootstrap/dist/css/bootstrap.min.css")}}">
+    <link rel="stylesheet" href="{{url("assets/bower_components/bootstrap/dist/css/bootstrap.min.css")}}">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="{{asset("assets/bower_components/font-awesome/css/font-awesome.min.css")}}">
+    <link rel="stylesheet" href="{{url("assets/bower_components/font-awesome/css/font-awesome.min.css")}}">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="{{asset("assets/bower_components/Ionicons/css/ionicons.min.css")}}">
+    <link rel="stylesheet" href="{{url("assets/bower_components/Ionicons/css/ionicons.min.css")}}">
 
     <link rel="stylesheet"
-          href="{{asset("assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css")}}">
-    <link rel="stylesheet" href="{{asset("assets/bower_components/select2/dist/css/select2.min.css")}}">
+          href="{{url("assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css")}}">
+    <link rel="stylesheet" href="{{url("assets/bower_components/select2/dist/css/select2.min.css")}}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{asset("assets/dist/css/AdminLTE.min.css")}}">
+    <link rel="stylesheet" href="{{url("assets/dist/css/AdminLTE.min.css")}}">
     <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
           page. However, you can choose any other skin. Make sure you
           apply the skin class to the body tag so the changes take effect. -->
-    <link rel="stylesheet" href="{{asset("assets/dist/css/skins/skin-blue.min.css")}}">
+    <link rel="stylesheet" href="{{url("assets/dist/css/skins/skin-blue.min.css")}}">
+
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+
+
+{{--    <link rel="stylesheet" href="{{asset("assets/bower_components/select2/dist/css/select2.min.css")}}">--}}
+
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -162,33 +170,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <!-- REQUIRED JS SCRIPTS -->
 
+{{--<script src="http://code.jquery.com/jquery-1.11.0.min.js%22%3E"></script>--}}
+
 <!-- jQuery 3 -->
-<script src="{{asset("assets/bower_components/jquery/dist/jquery.min.js")}}"></script>
+<script src="{{url("assets/bower_components/jquery/dist/jquery.min.js")}}"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="{{asset("assets/bower_components/bootstrap/dist/js/bootstrap.min.js")}}"></script>
-<script src="{{asset("assets/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js")}}"></script>
+<script src="{{url("assets/bower_components/bootstrap/dist/js/bootstrap.min.js")}}"></script>
+<script src="{{url("assets/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js")}}"></script>
 
 
-<script src="{{asset("assets/bower_components/select2/dist/js/select2.full.min.js")}}"></script>
-<script src="{{asset("assets/plugins/input-mask/jquery..inputmask.js")}}"></script>
-<script src="{{asset("assets/plugins/input-mask/jquery.inputmask.date.extensions.js")}}"></script>
-<script src="{{asset("assets/plugins/input-mask/jquery.inputmask.extensions.js")}}"></script>
-<script src="{{asset("assets/bower_components/moment/min/moment.min.js")}}"></script>
+<script src="{{url("assets/bower_components/select2/dist/js/select2.full.min.js")}}"></script>
+<script src="{{url("assets/bower_components/moment/min/moment.min.js")}}"></script>
 
 
-<script src="{{asset("assets/bower_components/datatables.net/js/jquery.dataTables.min.js")}}"></script>
-<script src="{{asset("assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js")}}"></script>
-<script src="{{asset("assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js")}}"></script>
-<script src="{{asset("assets/bower_components/fastclick/lib/fastclick.js")}}"></script>
+<script src="{{url("assets/bower_components/datatables.net/js/jquery.dataTables.min.js")}}"></script>
+<script src="{{url("assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js")}}"></script>
+<script src="{{url("assets/bower_components/jquery-slimscroll/jquery.slimscroll.min.js")}}"></script>
+<script src="{{url("assets/bower_components/fastclick/lib/fastclick.js")}}"></script>
 
 
-<script src="{{asset("assets/plugins/iCheck/icheck.min.js")}}"></script>
+<script src="{{url("assets/plugins/iCheck/icheck.min.js")}}"></script>
 
 
-<script src="{{asset("assets/dist/js/demo.js")}}"></script>
+<script src="{{url("assets/dist/js/demo.js")}}"></script>
 
 <!-- AdminLTE App -->
-<script src="{{asset("assets/dist/js/adminlte.min.js")}}"></script>
+<script src="{{url("assets/dist/js/adminlte.min.js")}}"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

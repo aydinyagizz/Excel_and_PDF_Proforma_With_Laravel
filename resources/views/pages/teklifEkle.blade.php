@@ -58,48 +58,51 @@
                     </div>
                 </div>
 
+{{--@php--}}
+{{--dd($urun);--}}
+{{--    use App\Models\Products;$urunDetay = Products::all()->where('id','==',$urunler->siparisOzellik);--}}
 
+{{--@endphp--}}
                 <div class="box-footer clearfix no-border form-group">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label>Sipariş ve özellikler</label>
-                                <select class="form-control select2 select2-hidden-accessible"
-                                        data-placeholder="Select a State" style="width: 100%;" tabindex="-1"
-                                        aria-hidden="true">
-                                    <option>Alabama</option>
-                                    <option>Alaska</option>
-                                    <option>California 23</option>
-                                    <option>Delaware</option>
-                                    <option>Tennessee</option>
-                                    <option>Texas</option>
-                                    <option>Washington</option>
+                                <select class="form-control select2 selectDiv1"
+                                        data-placeholder="Ürün Seçiniz" style="width: 100%;" tabindex="-1"
+                                        aria-hidden="true" name="siparisOzellik" id="siparisOzellik" required>
+                                    <option selected>Seçiniz</option>
+                                    @foreach($urun as $urunler)
+                                        <option id="option2" class="test"
+                                                value="{{$urunler->id}}">{{$urunler->siparisOzellik}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
 
 
-                        <div class="col-md-12">
-                            <label class="text" for="siparisOzellik">Sipariş ve özellikler</label>
-                            <input type="text" name="siparisOzellik" class="form-control"
-                                   placeholder="Sipariş ve özellikler" required>
-                        </div>
+
+                        {{--                        <div class="col-md-12">--}}
+{{--                            <label class="text" for="siparisOzellik">Sipariş ve özellikler</label>--}}
+{{--                            <input type="text" name="siparisOzellik" class="form-control"--}}
+{{--                                   placeholder="Sipariş ve özellikler" required>--}}
+{{--                        </div>--}}
 
 
                         <div class="col-md-4">
                             <label class="text" for="miktar">Miktar</label>
-                            <input type="number" min="0" name="miktar" class="form-control" placeholder="Miktar"
+                            <input type="number" min="0" name="miktar" id="miktar" class="form-control" placeholder="Miktar"
                                    required>
                         </div>
 
                         <div class="col-md-4">
                             <label class="text" for="birim">Birim</label>
-                            <input type="text" name="birim" class="form-control" placeholder="Birim" required>
+                            <input type="text" name="birim" id="birim" class="form-control" placeholder="Birim" required>
                         </div>
 
                         <div class="col-md-4">
                             <label class="text" for="malzemeFiyati">Malzeme Fiyatı</label>
-                            <input type="number" min="0" name="malzemeFiyati" class="form-control"
+                            <input type="number" min="0" name="malzemeFiyati" id="malzemeFiyati" class="form-control"
                                    placeholder="Malzeme Fiyatı"
                                    required>
                         </div>
@@ -200,10 +203,13 @@
                             <td><a href="{{url('teklifDelete/'.$teklif->id)}}"><i class="fa fa-trash-o"></i> </a>
                             </td>
                         </tr>
+
+
                         @php
                             $say++;
                         @endphp
                     @endforeach
+
                     </tbody>
 
                 </table>
@@ -225,4 +231,40 @@
             $('.select2').select2()
         })
     </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // $('select[id=siparisOzellik]').change(function(){
+            $('.select2').change(function () {
+                //alert("testik");
+                var urun = document.getElementById('siparisOzellik').value;
+
+
+                // alert();
+                // var birimId = document.getElementById('siparisOzellik').value;
+                // var malzemeFiyatiId = document.getElementById('siparisOzellik').value;
+
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN':'{{csrf_token()}}'},
+                    url: '{{route('admin.faturaDetayGetir')}}',
+                    type: 'POST',
+                    data: { id: urun },
+                    success:function(data){
+                        if ($.trim(data) != '') {
+                            $('#miktar').val(data.urunDetay.miktar);
+                            $('#birim').val(data.urunDetay.birim);
+                            $('#malzemeFiyati').val(data.urunDetay.malzemeFiyati);
+                        }
+                        else{
+                            alert("İlgili Kaydın verisi bulunamadı.");
+                        }
+                    }
+
+                })
+
+            });
+        });
+    </script>
+
+
 @endsection

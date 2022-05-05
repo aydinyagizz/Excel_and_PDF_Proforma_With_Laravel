@@ -35,13 +35,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php
-                                $say=1;
-                            @endphp
+                        @php
+                        $say = ($fatura->currentpage()-1)* $fatura->perpage() + 1;
+                        @endphp
                             @foreach($fatura as $faturaItem)
 
                             <tr>
-                                <td>{{$say}}</td>
+                                <td>{{$say++}}</td>
                                 <td> {{$faturaItem->musteriAdSoyad}} </td>
                                 <td> {{$faturaItem->faturaNo}} </td>
                                 <td> {{($faturaItem->created_at)->format('d/m/Y')}} </td>
@@ -49,9 +49,7 @@
                                 <td><a href="{{url('faturaDelete/'.$faturaItem->id)}}"><i class="fa fa-trash-o"></i> </a></td>
                                 <td><a href="{{url('teklifPdf/'.$faturaItem->id)}}"><i class="fa fa-eye"></i> </a></td>
                             </tr>
-                            @php
-                                $say++;
-                            @endphp
+
                             @endforeach
                         </tbody>
                     </table>

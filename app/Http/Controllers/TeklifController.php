@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 //use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Fatura;
 use App\Models\Post;
+use App\Models\Products;
 use App\Models\Teklif;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,12 +24,14 @@ class TeklifController extends Controller
     {
         $ide = $id;
         if ($request->post()) {
+            $urunDetay = Products::find($request->siparisOzellik);
 
             $teklif = new Teklif();
             $faturalar = Fatura::all();
             $teklifler = Teklif::all();
+
             $teklif->fatura_id = $ide;
-            $teklif->siparisOzellik = $request->siparisOzellik;
+            $teklif->siparisOzellik = $urunDetay->siparisOzellik;
             $teklif->fatura_id = $request->id;
 
             $teklif->miktar = $request->miktar;
@@ -45,6 +48,7 @@ class TeklifController extends Controller
             'teklif' => Teklif::all()->where('fatura_id', '==', $id),
             'Id' => $id,
             'TeklifYapanKisi' => Fatura::all()->where('id', '==', $id)->first(),
+            'urun' => Products::all(),
         ];
 
         return view('pages.teklifEkle', $data);
@@ -62,7 +66,7 @@ class TeklifController extends Controller
     {
         $data = [
             'teklifEdit' => Teklif::find($id),
-
+            'urun' => Products::all(),
 
         ];
         return view('pages.teklifEdit', compact('data'));
@@ -71,8 +75,9 @@ class TeklifController extends Controller
     public function teklifUpdate(Request $request)
     {
         $teklifUpdate = Teklif::find($request->id);
+        $urunDetay = Products::find($request->siparisOzellik);
 
-        $teklifUpdate->siparisOzellik = $request->siparisOzellik;
+        $teklifUpdate->siparisOzellik = $urunDetay->siparisOzellik;
         $teklifUpdate->miktar = $request->miktar;
         $teklifUpdate->birim = $request->birim;
         $teklifUpdate->malzemeFiyati = $request->malzemeFiyati;

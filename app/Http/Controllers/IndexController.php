@@ -20,6 +20,7 @@ use Illuminate\Validation\Validator;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\Console\Input\Input;
 
@@ -31,6 +32,43 @@ class IndexController extends BaseController
     {
         return view('pages.index');
     }
+
+    public function import(Request $request){
+        $this->validate($request, [
+            'import_file' => 'required|file|mimes:xls,xlsx'
+        ]);
+        $the_file = $request->file('import_file');
+        try{
+            $spreadsheet = IOFactory::load($the_file->getRealPath());
+            $sheet        = $spreadsheet->getActiveSheet();
+            $row_limit    = $sheet->getHighestDataRow();
+            $column_limit = $sheet->getHighestDataColumn();
+            $row_range    = range( 2, $row_limit );
+            $column_range = range( 'F', $column_limit );
+            $startcount = 1;
+            $data = array();
+            foreach ( $row_range as $row ) {
+                $data[] = [
+                    'siparisOzellik' =>$sheet->getCell( 'C' . $row )->getValue(),
+                    'miktar' => $sheet->getCell( 'A' . $row )->getValue(),
+                    'birim' => $sheet->getCell( 'B' . $row )->getValue(),
+                    'malzemeFiyati' => $sheet->getCell( 'A' . $row )->getValue(),
+
+
+                ];
+                $startcount++;
+            }
+            DB::table('products')->insert($data);
+        } catch (Exception $e) {
+            $error_code = $e->errorInfo[1];
+            return back()->withErrors('There was a problem uploading the data!');
+        }
+        return back()->withSuccess('Great! Data has been successfully uploaded.');
+    }
+
+
+
+
 
 
     public function userEdit(){
@@ -135,16 +173,18 @@ class IndexController extends BaseController
 //        return Excel::store(new PostExport(), 'dgh11.xlsx');
 //    }
 
-    public function import(Request $request) {
-        $posts = Excel::toCollection(new PostImport(), $request->file('import_file'));
-        foreach ($posts[0] as $post){
 
-           Post::where('id', $post[0])->update([
-               'title' => $post[1],
-               'description' => $post[2],
-           ]);
-        }
-        return \redirect()->route('admin.home');
-    }
+
+//    public function import(Request $request) {
+//        $posts = Excel::toCollection(new PostImport(), $request->file('import_file'));
+//        foreach ($posts[0] as $post){
+//
+//           Post::where('id', $post[0])->update([
+//               'title' => $post[1],
+//               'description' => $post[2],
+//           ]);
+//        }
+//        return \redirect()->route('admin.home');
+//    }
 
 }
