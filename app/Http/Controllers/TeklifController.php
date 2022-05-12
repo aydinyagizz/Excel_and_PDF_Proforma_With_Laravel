@@ -6,7 +6,9 @@ use App\Models\Fatura;
 use App\Models\Post;
 use App\Models\Products;
 use App\Models\Teklif;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
 use SebastianBergmann\CodeUnit\Mapper;
@@ -23,32 +25,33 @@ class TeklifController extends Controller
     public function teklifEkle($id, Request $request)
     {
         $ide = $id;
-        if ($request->post()) {
-            $urunDetay = Products::find($request->siparisOzellik);
-
-            $teklif = new Teklif();
-            $faturalar = Fatura::all();
-            $teklifler = Teklif::all();
-
-            $teklif->fatura_id = $ide;
-            $teklif->siparisOzellik = $urunDetay->siparisOzellik;
-            $teklif->fatura_id = $request->id;
-
-            $teklif->miktar = $request->miktar;
-            $teklif->birim = $request->birim;
-            $teklif->malzemeFiyati = $request->malzemeFiyati;
-
-            $teklif->save();
-
-            //return redirect()->route('admin.teklifEkle/'.$id);
-            return redirect()->back();
-        }
+//        if ($request->post()) {
+//            $urunDetay = Products::find($request->siparisOzellik);
+//
+//            $teklif = new Teklif();
+//            $faturalar = Fatura::all();
+//            $teklifler = Teklif::all();
+//
+//            $teklif->fatura_id = $ide;
+//            $teklif->siparisOzellik = $urunDetay->siparisOzellik;
+//            $teklif->fatura_id = $request->id;
+//
+//            $teklif->miktar = $request->miktar;
+//            $teklif->birim = $request->birim;
+//            $teklif->malzemeFiyati = $request->malzemeFiyati;
+//
+//            $teklif->save();
+//
+//            //return redirect()->route('admin.teklifEkle/'.$id);
+//            return redirect()->back();
+//        }
 
         $data = [
             'teklif' => Teklif::all()->where('fatura_id', '==', $id),
             'Id' => $id,
             'TeklifYapanKisi' => Fatura::all()->where('id', '==', $id)->first(),
             'urun' => Products::all(),
+            'user' => Auth::user()
         ];
 
         return view('pages.teklifEkle', $data);
@@ -74,14 +77,24 @@ class TeklifController extends Controller
 
     public function teklifUpdate(Request $request)
     {
+
         $teklifUpdate = Teklif::find($request->id);
+
         $urunDetay = Products::find($request->siparisOzellik);
 
-        $teklifUpdate->siparisOzellik = $urunDetay->siparisOzellik;
-        $teklifUpdate->miktar = $request->miktar;
-        $teklifUpdate->birim = $request->birim;
-        $teklifUpdate->malzemeFiyati = $request->malzemeFiyati;
-        $teklifUpdate->save();
+        if ($urunDetay == null){
+            $teklifUpdate->miktar = $request->miktar;
+            $teklifUpdate->birim = $request->birim;
+            $teklifUpdate->malzemeFiyati = $request->malzemeFiyati;
+            $teklifUpdate->save();
+        }else {
+            $teklifUpdate->siparisOzellik = $urunDetay->siparisOzellik;
+            $teklifUpdate->miktar = $request->miktar;
+            $teklifUpdate->birim = $request->birim;
+            $teklifUpdate->malzemeFiyati = $request->malzemeFiyati;
+            $teklifUpdate->save();
+        }
+
         return redirect('teklifEkle/' . $teklifUpdate->fatura_id);
 
     }

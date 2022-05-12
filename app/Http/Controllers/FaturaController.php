@@ -38,6 +38,7 @@ class FaturaController extends Controller
         $data = [
             'fatura' => Fatura::orderBy('id', 'desc')->paginate(10),
             'urun' => Products::all(),
+            'user' => Auth::user()
         ];
         //$paginate = DB::table('faturalar')->paginate();
 
@@ -57,8 +58,28 @@ class FaturaController extends Controller
 
 //        $fatura->faturaNo = 'DGH-00'.count($faturaNoSay);
         $fatura->faturaNo = 'DGH-' . $randomSayi;
+        $fatura->user_id = Auth::user()->id;
+
+
+
+//
+//        if ($request->iskonto > (Auth::user()->iskontoKisiti)){
+//            return Redirect::to('faturaEkle')->withErrors("İskonto " . (Auth::user()->iskontoKisiti) . " 'den büyük olamaz.");
+//        }
+
+        //$fatura = new Fatura();
+        // $teklif = Teklif::all();
+        // $teklif = new Teklif();
+
+        $fatura->karOrani = $request->input('karOrani');
+        $fatura->iscilik = $request->input('iscilik');
+        $fatura->yol = $request->input('yol');
+
+
+
 
         $fatura->save();
+
 
 //        foreach($request->request as $key) {
         for ($i=0; $i<count($request->siparisOzellik); $i++){
@@ -75,7 +96,7 @@ class FaturaController extends Controller
             //echo $request->siparisOzellik[$i];
             $teklif = new Teklif();
             //$teklif->siparisOzellik = $request->siparisOzellik[$i];
-    
+
             $teklif->siparisOzellik = $urunDetay->siparisOzellik;
 
             //dd(($urunDetay->siparisOzellik[$i]));
@@ -139,18 +160,26 @@ class FaturaController extends Controller
 
     public function yuzdeEkle(Request $request, $id)
     {
-        $yuzdeEkle = Fatura::find($request->id);
 
-        //$fatura = new Fatura();
-        // $teklif = Teklif::all();
-        // $teklif = new Teklif();
+        $fatura = Fatura::find($request->id);
 
-        $yuzdeEkle->yuzdelikKar = $request->input('yuzdelikKar');
-        $yuzdeEkle->iscilik = $request->input('iscilik');
-        $yuzdeEkle->yol = $request->input('yol');
+        if ($request->iskonto > (Auth::user()->karKisiti/2)){
+            return Redirect::to('teklifEkle/' . $fatura->id)->withErrors("İskonto " . (Auth::user()->karKisiti/2) . " 'den büyük olamaz.");
+        }
+        else{
+            //$fatura = new Fatura();
+            // $teklif = Teklif::all();
+            // $teklif = new Teklif();
 
-        $yuzdeEkle->save();
-        return redirect('teklifEkle/' . $yuzdeEkle->id);
+            $fatura->iskonto = $request->input('iskonto');
+            $fatura->iscilik = $request->input('iscilik');
+            $fatura->yol = $request->input('yol');
+
+            $fatura->save();
+        }
+
+
+        return redirect('teklifEkle/' . $fatura->id);
     }
 
 }

@@ -52,7 +52,7 @@
                             @foreach($user as $userItem)
 
                             <tr>
-                                <td>{{$say++}}</td>
+                                <td><b>{{$say++}}</b></td>
                                 <td> {{$userItem->name}} </td>
                                 <td> {{$userItem->email}} </td>
                                 <td>

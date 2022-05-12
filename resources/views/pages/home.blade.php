@@ -26,7 +26,7 @@
 <table class="table">
     <thead>
     <tr>
-        <th>Sipariş ve Özellik</th>
+        <th>Ürün Adı</th>
         <th>Miktar</th>
         <th>Birim</th>
         <th>Malzeme Fiyatı</th>

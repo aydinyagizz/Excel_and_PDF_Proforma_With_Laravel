@@ -45,10 +45,10 @@
                         <input type="text" name="fullName" class="form-control" placeholder="Ad Soyad" required value="{{$user->name}}">
                     </div>
 
-{{--                    <div>--}}
-{{--                        <label class="text" for="email">Email</label>--}}
-{{--                        <input type="text" name="email" class="form-control" placeholder="Ad Soyad" required value="{{$user->email}}">--}}
-{{--                    </div>--}}
+                    <div>
+                        <label class="text" for="email">Email</label>
+                        <input type="text" name="email" class="form-control" disabled placeholder="" value="{{$user->email}}" >
+                    </div>
 
                     <div class="form-group has-feedback">
                         <label class="text" for="role">Rol</label>
@@ -59,6 +59,12 @@
                             @endforeach
                         </select>
                     </div>
+
+                    <div>
+                        <label class="text" for="iskontoKisiti">İskonto kısıtı</label>
+                        <input type="text" name="iskontoKisiti" class="form-control" placeholder="İskonto kısıtı" required value="{{$user->iskontoKisiti}}">
+                    </div>
+
 
                     <br>
                     <button type="submit" class="btn btn-default pull-right"><i class="fa fa-pencil"></i> Düzenle</button>

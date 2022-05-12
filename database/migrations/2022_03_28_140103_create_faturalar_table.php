@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('faturalar', function (Blueprint $table) {
             $table->bigIncrements('id');
-
             $table->string('musteriAdSoyad');
             $table->string('faturaNo');
-            $table->integer('yuzdelikKar')->default(0);
+            $table->integer('karOrani')->default(0);
             $table->integer('iscilik')->default(0);
             $table->integer('yol')->default(0);
             $table->timestamps();

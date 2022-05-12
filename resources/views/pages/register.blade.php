@@ -66,13 +66,19 @@ $user = Auth::user();
                     @endforeach
                 </select>
             </div>
+
+            <div class="form-group has-feedback">
+                <input type="number" min="0"  class="form-control" placeholder="İskonto kısıtı" name="iskontoKisiti" required>
+                <span class="glyphicon glyphicon-cog form-control-feedback"></span>
+            </div>
+
             <div class="form-group has-feedback">
                 <input type="password" class="form-control" placeholder="Şifre" name="password" required>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
                 <input type="password" class="form-control" placeholder="Şifre Tekrar" name="confirmPassword" required>
-                <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="row">
                 <div class="col-xs-4">

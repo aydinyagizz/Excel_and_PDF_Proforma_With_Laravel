@@ -39,6 +39,7 @@ class UsersController extends Controller
             'email' => $request->input('email'),
             'password' => $request->input('password'),
             'passwordTwo' => $request->input('confirmPassword'),
+            'iskontoKisiti' => $request->iskontoKisiti,
         ];
 
         $validator = Validator::make($data, array(
@@ -51,18 +52,27 @@ class UsersController extends Controller
         if ($request->password != $request->confirmPassword) {
             return Redirect::to('register')->withErrors('Şifreler eşleşmiyor.');
         }
-        if ($request->password == '' || $request->confirmPassword == '' || $request->email == '' || $request->fullName == '') {
+        if ($request->password == '' || $request->confirmPassword == '' || $request->email == '' || $request->fullName == '' || $request->iskontoKisiti == '') {
 
             return Redirect::to('register')->withErrors('Boş alanları doldurunuz.');
         }
 
+        $user = new User();
+        $user->name = $request->fullName;
+        $user->email = $request->email;
+        $user->iskontoKisiti = $request->iskontoKisiti;
+        $user->password = Hash::make($request->password);
+        $user->assignRole($request->input('role'));
+        $user->save();
 
-        User::create([
-            'name' => $request->fullName,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-//        ])->assignRole($request->input('role'))->save();
-        ])->syncRoles($request->input('role'))->save();
+//        User::create([
+//            'name' => $request->fullName,
+//            'email' => $request->email,
+//            'iskontoKisiti' => $request->iskontoKisiti,
+//            'password' => Hash::make($request->password),
+//
+////        ])->assignRole($request->input('role'))->save();
+//        ])->syncRoles($request->input('role'))->save();
 
 //        return Redirect::to('/');
         $user = User::with('roles')->orderBy('id', 'desc')->paginate(10);
@@ -88,7 +98,8 @@ class UsersController extends Controller
         }
 
         $user->delete();
-        return redirect()->back();
+        //return redirect()->back();
+        return Redirect::to('userList');
 //        return view('pages.userUpdate', compact('user', 'roles'));
     }
 
@@ -113,6 +124,7 @@ class UsersController extends Controller
 //        }
 
         $userUpdate->name = $request->fullName;
+        $userUpdate->iskontoKisiti = $request->iskontoKisiti;
 //            $user->email = $request->email;
         $userUpdate->save();
 //        $userUpdate->assignRole($request->input('role'));

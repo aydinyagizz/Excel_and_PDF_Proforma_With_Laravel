@@ -42,7 +42,7 @@
                 <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label>Sipariş ve özellikler</label>
+                        <label>Ürün Adı</label>
                         <select class="form-control select2 selectDiv1"
                                 data-placeholder="Ürün Seçiniz" style="width: 100%;" tabindex="-1"
                                 aria-hidden="true" name="siparisOzellik" id="siparisOzellik" required>

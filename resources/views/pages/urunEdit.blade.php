@@ -39,24 +39,29 @@
 
             <div class="box-footer clearfix no-border form-group">
                 <div>
-                <label class="text" for="siparisOzellik">Sipariş ve özellikler</label>
-                <input type="text" name="siparisOzellik" class="form-control" placeholder="Sipariş ve özellikler" required value="{{$data['urunEdit']->siparisOzellik}}">
+                <label class="text" for="siparisOzellik">Ürün Adı</label>
+                <input type="text" name="siparisOzellik" class="form-control" placeholder="Ürün Adı" required value="{{$data['urunEdit']->siparisOzellik}}">
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                     <label class="text" for="miktar">Miktar</label>
                     <input type="number" name="miktar" class="form-control" placeholder="Miktar" required value="{{$data['urunEdit']->miktar}}">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="text" for="birim">Birim</label>
                         <input type="text" name="birim" class="form-control" placeholder="Birim" required value="{{$data['urunEdit']->birim}}">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="text" for="malzemeFiyati">Malzeme Fiyatı</label>
                         <input type="number" name="malzemeFiyati" class="form-control" placeholder="Malzeme Fiyatı" required value="{{$data['urunEdit']->malzemeFiyati}}">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="text" for="urunKar">Uygulanacak yüzdelik kar <small>(Örn: 5, 10)</small></label>
+                        <input type="number" name="urunKar" class="form-control" placeholder="Malzeme Fiyatı" required value="{{$data['urunEdit']->urunKar}}">
                     </div>
 
 

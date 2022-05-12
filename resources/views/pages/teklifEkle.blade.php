@@ -36,8 +36,8 @@
         </div>
         <div class="box-body">
             {{--            <form action="{{route('admin.teklifEkle')}}" method="POST">--}}
-            <form action="{{url('teklifEkle/'.$Id)}}" method="POST">
-                @csrf
+{{--            <form action="{{url('teklifEkle/'.$Id)}}" method="POST">--}}
+{{--                @csrf--}}
 
                 <input type="hidden" name="id" value="{{$Id}}">
                 <div class="col-md-6" align="center">
@@ -58,99 +58,103 @@
                     </div>
                 </div>
 
-{{--@php--}}
-{{--dd($urun);--}}
-{{--    use App\Models\Products;$urunDetay = Products::all()->where('id','==',$urunler->siparisOzellik);--}}
 
-{{--@endphp--}}
-                <div class="box-footer clearfix no-border form-group">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Sipariş ve özellikler</label>
-                                <select class="form-control select2 selectDiv1"
-                                        data-placeholder="Ürün Seçiniz" style="width: 100%;" tabindex="-1"
-                                        aria-hidden="true" name="siparisOzellik" id="siparisOzellik" required>
-                                    <option selected>Seçiniz</option>
-                                    @foreach($urun as $urunler)
-                                        <option id="option2" class="test"
-                                                value="{{$urunler->id}}">{{$urunler->siparisOzellik}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+{{--                <div class="box-footer clearfix no-border form-group">--}}
+{{--                    <div class="row">--}}
+{{--                        <div class="col-md-12">--}}
+{{--                            <div class="form-group">--}}
+{{--                                <label>Ürün Adı <small>(*Bu alandan ürün eklemesi yapabilirsiniz.)</small></label>--}}
+{{--                                <select class="form-control select2 selectDiv1"--}}
+{{--                                        data-placeholder="Ürün Seçiniz" style="width: 100%;" tabindex="-1"--}}
+{{--                                        aria-hidden="true" name="siparisOzellik" id="siparisOzellik" required>--}}
+{{--                                    <option selected>Seçiniz</option>--}}
+{{--                                    @foreach($urun as $urunler)--}}
+{{--                                        <option id="option2" class="test"--}}
+{{--                                                value="{{$urunler->id}}">{{$urunler->siparisOzellik}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        --}}
 
 
-
-                        {{--                        <div class="col-md-12">--}}
-{{--                            <label class="text" for="siparisOzellik">Sipariş ve özellikler</label>--}}
-{{--                            <input type="text" name="siparisOzellik" class="form-control"--}}
-{{--                                   placeholder="Sipariş ve özellikler" required>--}}
+{{--                        <div class="col-md-4">--}}
+{{--                            <label class="text" for="miktar">Miktar</label>--}}
+{{--                            <input type="number" min="0" name="miktar" id="miktar" class="form-control" placeholder="Miktar"--}}
+{{--                                   required>--}}
 {{--                        </div>--}}
 
+{{--                        <div class="col-md-4">--}}
+{{--                            <label class="text" for="birim">Birim</label>--}}
+{{--                            <input type="text" name="birim" id="birim" class="form-control" placeholder="Adet" required>--}}
+{{--                        </div>--}}
 
-                        <div class="col-md-4">
-                            <label class="text" for="miktar">Miktar</label>
-                            <input type="number" min="0" name="miktar" id="miktar" class="form-control" placeholder="Miktar"
-                                   required>
-                        </div>
+{{--                        <div class="col-md-4">--}}
+{{--                            <label class="text" for="malzemeFiyati">Malzeme Fiyatı</label>--}}
+{{--                            <input type="number" min="0" step="0.01" name="malzemeFiyati" id="malzemeFiyati" class="form-control"--}}
+{{--                                   placeholder="Malzeme Fiyatı"--}}
+{{--                                   required>--}}
+{{--                        </div>--}}
 
-                        <div class="col-md-4">
-                            <label class="text" for="birim">Birim</label>
-                            <input type="text" name="birim" id="birim" class="form-control" placeholder="Birim" required>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="text" for="malzemeFiyati">Malzeme Fiyatı</label>
-                            <input type="number" min="0" name="malzemeFiyati" id="malzemeFiyati" class="form-control"
-                                   placeholder="Malzeme Fiyatı"
-                                   required>
-                        </div>
-
-                    </div>
-                    <br>
-                    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Ekle</button>
-                </div>
-            </form>
+{{--                    </div>--}}
+{{--                    <br>--}}
+{{--                    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Ürün Ekle</button>--}}
+{{--                </div>--}}
+{{--            </form>--}}
 
 
-            <form action="{{url('yuzdeEkle/'.$Id)}}" method="POST">
-                @csrf
-                <div class="box-footer clearfix no-border form-group">
+{{--            <form action="{{url('yuzdeEkle/'.$Id)}}" method="POST">--}}
+{{--                @csrf--}}
+{{--                <div class="box-footer clearfix no-border form-group">--}}
+{{--                    @if($errors->count() > 0)--}}
+{{--                        <div class="form-group alert alert-danger">--}}
+{{--                            <ul>--}}
+{{--                                @foreach ($errors->all() as $error)--}}
+{{--                                    {{ $error }}--}}
+{{--                                @endforeach--}}
+{{--                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">--}}
+{{--                                    <span aria-hidden="true">&times;</span>--}}
+{{--                                </button>--}}
+{{--                            </ul>--}}
+{{--                        </div>--}}
 
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label class="text" for="yuzdelikKar">Yüzdelik Kar <small>(ÖRN: 10, 20)</small></label>
-                            <input type="number" name="yuzdelikKar" class="form-control"
-                                   placeholder="Yüzdelik Kar" min="0" value="{{$TeklifYapanKisi->yuzdelikKar}}" required
-                                   step="any">
-                        </div>
+{{--                    @endif--}}
+{{--                    <div class="row">--}}
+{{--                        <div class="col-md-3">--}}
+{{--                            <label class="text" for="iskonto">İskonto yüzdesi <small>(ÖRN: 5, 10) yüzde {{$user->karKisiti/2}} 'ı geçemez</small></label>--}}
+{{--                            <input type="number" name="iskonto" class="form-control"--}}
+{{--                                   placeholder="İskonto yüzdesi" min="0" value="{{$TeklifYapanKisi->iskonto}}" required--}}
+{{--                                   step="any">--}}
+{{--                        </div>--}}
 
-                        <div class="col-md-3">
-                            <label class="text" for="iscilik">İşçilik</label>
-                            <input type="number" name="iscilik" class="form-control"
-                                   placeholder="İşçilik" min="0" value="{{$TeklifYapanKisi->iscilik}}" required
-                                   step="any">
-                        </div>
+{{--                        <div class="col-md-3">--}}
+{{--                            <label class="text" for="iscilik">İşçilik</label>--}}
+{{--                            <input type="number" name="iscilik" class="form-control"--}}
+{{--                                   placeholder="İşçilik" min="0" value="{{$TeklifYapanKisi->iscilik}}" required--}}
+{{--                                   step="any">--}}
+{{--                        </div>--}}
 
-                        <div class="col-md-3">
-                            <label class="text" for="yol">Yol</label>
-                            <input type="number" name="yol" class="form-control"
-                                   placeholder="Yol" min="0" value="{{$TeklifYapanKisi->yol}}" required step="any">
-                        </div>
-                    </div>
-                    <br>
-                    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Düzenle
-                    </button>
-                </div>
-            </form>
+{{--                        <div class="col-md-3">--}}
+{{--                            <label class="text" for="yol">Yol</label>--}}
+{{--                            <input type="number" name="yol" class="form-control"--}}
+{{--                                   placeholder="Yol" min="0" value="{{$TeklifYapanKisi->yol}}" required step="any">--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <br>--}}
+{{--                    <button type="submit" class="btn btn-warning pull-right"><i class="fa fa-plus"></i> Faturayı Güncelle--}}
+{{--                    </button>--}}
+{{--                </div>--}}
+{{--            </form>--}}
 
+{{--            @php--}}
+{{--            dd($teklif, $Id, $TeklifYapanKisi, $user);--}}
+{{--            @endphp--}}
 
             <div align="left" class="col-md-6 row" style="margin-bottom: 30px !important;">
 
                 <div class="col-md-3">
                     <h4>Teklif Formu</h4>
-                    <a href="{{ url('export/'.$Id )}}" class="btn btn-primary"><i class="fa fa-download"></i> Excel
+                    <a href="{{ url('export/'.$Id )}}" class="btn btn-success"><i class="fa fa-download"></i> Excel
                         indir</a>
                 </div>
                 <div class="col-md-3">
@@ -164,7 +168,13 @@
         </div>
 
         {{--{{dd($teklif[0]->miktar)}}--}}
+        @php
+            $urunTutar=0;
+                foreach($teklif as $teklifler){
+                   $urunTutar += (($teklifler->miktar)*($teklifler->malzemeFiyati));
 
+    }
+        @endphp
         <ul class="todo-list ui-sortable">
 
             <li class="" style="background-color: white !important;">
@@ -174,11 +184,12 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Sipariş Özellikleri</th>
+                        <th>Ürün Adı</th>
                         <th>Miktar</th>
                         <th>Birim</th>
                         <th>Malzeme Fiyatı</th>
                         <th>Ürün Tutar</th>
+                        <th>İskontolu Ürün Tutar</th>
                         <th>Ekleme Tarihi</th>
                         <th></th>
                         <th></th>
@@ -196,7 +207,8 @@
                             <td> {{$teklif->miktar}} </td>
                             <td> {{$teklif->birim}} </td>
                             <td> {{$teklif->malzemeFiyati}} </td>
-                            <td> {{number_format((($teklif->miktar)*($teklif->malzemeFiyati)),2)}} </td>
+                            <td> {{(($teklif->miktar)*($teklif->malzemeFiyati))}} </td>
+                            <td> {{ $karliUrunTutar = number_format((($teklif->miktar)*($teklif->malzemeFiyati)) + ((($teklif->miktar)*($teklif->malzemeFiyati)) * ($TeklifYapanKisi->karOrani/100)),2) }} </td>
                             <td> {{($teklif->created_at)->format('d/m/Y')}} </td>
                             {{--                            <td><a href="teklifEdit/{{$teklif->id}}"><i class="fa fa-edit"></i></a> </td>--}}
                             <td><a href="{{url('teklifEdit/'.$teklif->id)}}"><i class="fa fa-edit"></i></a></td>

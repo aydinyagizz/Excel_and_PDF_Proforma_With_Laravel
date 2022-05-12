@@ -92,7 +92,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>Sipariş ve Özellikler</th>
+                        <th>Ürün Adı</th>
                         <th>Miktar</th>
                         <th>Birim</th>
                         {{--                    <th>Malzeme Fiyatı </th>--}}

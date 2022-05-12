@@ -28,6 +28,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
+    <script src="https://unpkg.com/bootstrap-table@1.20.0/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.20.0/dist/bootstrap-table-locale-all.min.js"></script>
+
 
 
 {{--    <link rel="stylesheet" href="{{asset("assets/bower_components/select2/dist/css/select2.min.css")}}">--}}

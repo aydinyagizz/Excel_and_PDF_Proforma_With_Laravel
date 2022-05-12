@@ -19,6 +19,7 @@ class ProductsController extends Controller
             $urun->miktar = $request->miktar;
             $urun->birim = $request->birim;
             $urun->malzemeFiyati = $request->malzemeFiyati;
+            $urun->urunKar = $request->urunKar;
 
             $urun->save();
 
@@ -27,7 +28,7 @@ class ProductsController extends Controller
         }
 
         $data = [
-//            'urun' => Products::all(),
+            'urunler' => Products::all(),
             'urun' => Products::orderBy('id', 'desc')->paginate(10),
         ];
 
@@ -59,8 +60,20 @@ class ProductsController extends Controller
         $urunUpdate->miktar = $request->miktar;
         $urunUpdate->birim = $request->birim;
         $urunUpdate->malzemeFiyati = $request->malzemeFiyati;
+        $urunUpdate->urunKar = $request->urunKar;
         $urunUpdate->save();
         return redirect('urunEkle');
 
+    }
+
+    public function productsSearch(Request $request)
+    {
+        $articles = Products::when($request->has("title"),function($q)use($request){
+            return $q->where("title","like","%".$request->get("title")."%");
+        })->paginate(5);
+        if($request->ajax()){
+            return view('articles.article-pagination ',['articles'=>$articles]);
+        }
+        return view('articles.article ',['articles'=>$articles]);
     }
 }

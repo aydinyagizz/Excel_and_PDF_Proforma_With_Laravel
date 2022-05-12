@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('siparisOzellik');
             $table->integer('miktar');
             $table->text('birim');
-            $table->integer('malzemeFiyati');
+            $table->double('malzemeFiyati',18,2);
             $table->timestamps();
 
             //$table->foreign('fatura_id')->references('id')->on('faturalar')->onDelete('cascade');

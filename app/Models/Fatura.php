@@ -11,6 +11,6 @@ class Fatura extends Model
     protected $table = 'faturalar';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'id', 'teklif_id', 'musteriAdSoyad', 'faturaNo', 'yuzdelikKar', 'iscilik', 'yol', 'created_at'
+        'id', 'teklif_id', 'musteriAdSoyad', 'faturaNo', 'karOrani', 'iscilik', 'yol', 'created_at'
     ];
 }

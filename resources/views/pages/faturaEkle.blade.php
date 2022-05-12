@@ -57,7 +57,7 @@
 
                         <div class="col-md-5">
                             <div class="form-group">
-                                <label>Sipariş ve özellikler</label>
+                                <label>Ürün Adı</label>
                                 <select class="form-control select2 selectDiv1"
                                         data-placeholder="Ürün Seçiniz" style="width: 100%;" tabindex="-1"
                                         aria-hidden="true" name="siparisOzellik[]" id="siparisOzellik1" required>
@@ -87,20 +87,47 @@
 
                         <div class="col-md-2" id="1">
                             <label class="text" for="malzemeFiyati">Malzeme Fiyatı</label>
-                            <input type="number" min="0" id="malzemeFiyati" name="malzemeFiyati[]" class="form-control"
+                            <input type="number" min="0" step="0.01" id="malzemeFiyati" {{ $user->roles[0]->name == 'Admin' ? '' : 'disabled'  }} name="malzemeFiyati[]" class="form-control"
                                    placeholder="Malzeme Fiyatı" value="" required>
                         </div>
 
                         <div class="col-md-12" id="button_pro">
 
                             <div class='space' id='input_1' align="right">
-                                <i class="fa fa-plus add right" style="cursor: pointer"> Ekle</i>
+                                <i class="fa fa-plus add right" style="cursor: pointer"> Satır Ekle</i>
                             </div>
                         </div>
 
                     </div>
 
                     <br>
+
+{{--                    <div class="col-md-3">--}}
+{{--                        <label class="text" for="iskonto">İskonto yüzdesi <small>(ÖRN: 5, 10) yüzde 5 'ı geçemez</small></label>--}}
+{{--                        <input type="number" name="iskonto" class="form-control" placeholder="İskonto yüzdesi" min="0" value="0" required="" step="any">--}}
+{{--                    </div>--}}
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="text" for="karOrani">Ürünlere uygulanacak kâr oranı <small>(ÖRN: 5, 10)</small></label>
+                            <input type="number" name="karOrani" class="form-control"
+                                   placeholder="Ürünlere uygulanacak kâr oranı" min="0" value="0" required
+                                   step="any">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="text" for="iscilik">İşçilik</label>
+                            <input type="number" name="iscilik" class="form-control"
+                                   placeholder="İşçilik" min="0" value="0" required
+                                   step="any">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="text" for="yol">Yol</label>
+                            <input type="number" name="yol" class="form-control"
+                                   placeholder="Yol" min="0" value="0" required step="any">
+                        </div>
+                    </div>
 
 
                 </div>
@@ -126,6 +153,8 @@
 
     <script>
 
+        var user = {!! auth()->user() !!};
+
         var id = 2;
 
         $('document').ready(function () {
@@ -134,7 +163,7 @@
             $('#button_pro').on('click', '.add', function () {
 
                 $(this).remove();
-                txt_box = '<div class="row" id="input_' + id + '"><div class="col-md-5"><div class="form-group"><label>Sipariş ve özellikler</label><select class="form-control select2 selectDiv "  id="siparisOzellik' + id + '" name="siparisOzellik[]" data-placeholder="Ürün Seçiniz" style="width: 100%;" tabindex="-1" aria-hidden="true" required>"<option selected>Seçiniz</option>@foreach($urun as $urunler)<option value="{{$urunler->id}}">{{$urunler->siparisOzellik}}</option>@endforeach"</select></div></div><div class="col-md-2"><label class="text" for="miktar">Miktar</label><input type="number" min="0" id="miktar' + id + '" name="miktar[]" class="form-control" placeholder="Miktar" required value=""></div><div class="col-md-2"><label class="text" for="birim">Birim</label><input type="text" id="birim' + id + '" name="birim[]" class="form-control" placeholder="Birim" required></div><div class="col-md-2"><label class="text" for="malzemeFiyati">Malzeme Fiyatı</label><input type="number" min="0" id="malzemeFiyati' + id + '" name="malzemeFiyati[]" class="form-control" placeholder="Malzeme Fiyatı" required></div><i class=" fa fa-trash remove" style="cursor: pointer"> Sil </i> <i class="fa fa-plus add right" style="cursor: pointer"> Ekle </i></div>';
+                txt_box = '<div class="row" id="input_' + id + '"><div class="col-md-5"><div class="form-group"><label>Ürün Adı</label><select class="form-control select2 selectDiv "  id="siparisOzellik' + id + '" name="siparisOzellik[]" data-placeholder="Ürün Seçiniz" style="width: 100%;" tabindex="-1" aria-hidden="true" required>"<option selected>Seçiniz</option>@foreach($urun as $urunler)<option value="{{$urunler->id}}">{{$urunler->siparisOzellik}}</option>@endforeach"</select></div></div><div class="col-md-2"><label class="text" for="miktar">Miktar</label><input type="number" min="0" id="miktar' + id + '" name="miktar[]" class="form-control" placeholder="Miktar" required value=""></div><div class="col-md-2"><label class="text" for="birim">Birim</label><input type="text" id="birim' + id + '" name="birim[]" class="form-control" placeholder="Birim" required></div><div class="col-md-2"><label class="text" for="malzemeFiyati">Malzeme Fiyatı</label><input type="number" min="0" step="0.01" id="malzemeFiyati' + id + '" {{ $user->roles[0]->name == 'Admin' ? '' : 'disabled'  }} name="malzemeFiyati[]" class="form-control" placeholder="Malzeme Fiyatı" required></div><i class=" fa fa-trash remove" style="cursor: pointer"> Sil </i> <i class="fa fa-plus add right" style="cursor: pointer"> Satır Ekle </i></div>';
                 $("#button_pro").append(txt_box);
                 id++;
 
@@ -153,11 +182,18 @@
                                 var miktarVar = 'miktar'+(id-1);
                                 var birimVar = 'birim'+(id-1);
                                 var malzemeFiyatiVar = 'malzemeFiyati'+(id-1);
+                                var karliMalzemeFiyati = (((data.urunDetay.malzemeFiyati) + (data.urunDetay.malzemeFiyati * (data.urunDetay.urunKar/100)))).toFixed(2);
+                                var iskontoluMalzemeFiyati = ((karliMalzemeFiyati - (karliMalzemeFiyati) * (user.iskontoKisiti/100))).toFixed(2);
 
                                 $('#'+miktarVar).val(data.urunDetay.miktar);
                                 $('#'+birimVar).val(data.urunDetay.birim);
-                                $('#'+malzemeFiyatiVar).val(data.urunDetay.malzemeFiyati);
-
+                                if(userRole == 'Admin') {
+                                    $('#' + malzemeFiyatiVar).val(karliMalzemeFiyati);
+                                }if(userRole == 'Kullanıcı') {
+                                    $('#' + malzemeFiyatiVar).val(iskontoluMalzemeFiyati);
+                                }else{
+                                    $('#' + malzemeFiyatiVar).val(iskontoluMalzemeFiyati);
+                                }
                             } else {
                                 alert("İlgili Kaydın verisi bulunamadı.");
                             }
@@ -180,7 +216,7 @@
                 $("#" + parent_im).slideUp('medium', function () {
                     $("#" + parent_im).remove();
                     if ($('.add').length < 1) {
-                        $("#" + parent).append('<i class="fa fa-plus add right" style="cursor: pointer"> Ekle</i>');
+                        $("#" + parent).append('<i class="fa fa-plus add right" style="cursor: pointer"> Satır Ekle</i>');
                     }
                 });
             });
@@ -199,6 +235,10 @@
     </script>
 
     <script type="text/javascript">
+
+        var user = {!! auth()->user() !!};
+        var userRole = '{!! auth()->user()->roles[0]->name !!}';
+
         $(document).ready(function () {
             // $('select[id=siparisOzellik]').change(function(){
             $('.select2-hidden-accessible').change(function () {
@@ -217,9 +257,21 @@
                     data: { id: urun },
                     success:function(data){
                         if ($.trim(data) != '') {
+                            var karliMalzemeFiyati = (((data.urunDetay.malzemeFiyati) + (data.urunDetay.malzemeFiyati * (data.urunDetay.urunKar/100)))).toFixed(2);
+                            console.log("karlı fiyat "+karliMalzemeFiyati);
+                            var iskontoluMalzemeFiyati = ((karliMalzemeFiyati - (karliMalzemeFiyati) * (user.iskontoKisiti/100))).toFixed(2);
+                            console.log("iskontolu fiyat "+iskontoluMalzemeFiyati);
+
                             $('#miktar').val(data.urunDetay.miktar);
                             $('#birim').val(data.urunDetay.birim);
-                            $('#malzemeFiyati').val(data.urunDetay.malzemeFiyati);
+                            if(userRole == 'Admin'){
+                                $('#malzemeFiyati').val(karliMalzemeFiyati);
+                            }if(userRole == 'Kullanıcı'){
+                                $('#malzemeFiyati').val(iskontoluMalzemeFiyati);
+                            } else {
+                                $('#malzemeFiyati').val(iskontoluMalzemeFiyati);
+                            }
+
                         }
                         else{
                             alert("İlgili Kaydın verisi bulunamadı.");
