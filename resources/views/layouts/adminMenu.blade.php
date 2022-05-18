@@ -33,7 +33,9 @@
               </span>
                 </a>
                 <ul class="treeview-menu">
+{{--                    @role('Admin')--}}
                     <li><a href="{{ route('admin.faturaListele') }}">Teklifler</a></li>
+{{--                    @endrole--}}
                     <li><a href="{{ route('admin.faturaEkle') }}">Teklif Ekle</a></li>
 
 {{--                    <li><a href="{{ route('admin.teklifEkle') }}">Teklif Ekle</a></li>--}}

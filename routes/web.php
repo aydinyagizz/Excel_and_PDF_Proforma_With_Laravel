@@ -69,7 +69,7 @@ Route::prefix('/')->middleware('auth')->group(function () {
     //  Route::get('storage', [IndexController::class, 'storage'])->name('admin.storage');
     Route::post('import', [IndexController::class, 'import'])->name('admin.import');
 
-
+    Route::post('products/search',[ProductsController::class,'productsSearch'])->name('products.search');
 
 });
 

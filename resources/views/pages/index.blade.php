@@ -23,7 +23,7 @@
     </div>
 
 
-
+    @role('Admin')
 
 <section class="content-header">
     <h1>
@@ -97,7 +97,7 @@
         </div>
         <!-- ./col -->
     </div>
-
+@endrole
 
 @endsection
 

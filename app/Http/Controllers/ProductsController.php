@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Products;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductsController extends Controller
 {
@@ -68,12 +69,7 @@ class ProductsController extends Controller
 
     public function productsSearch(Request $request)
     {
-        $articles = Products::when($request->has("title"),function($q)use($request){
-            return $q->where("title","like","%".$request->get("title")."%");
-        })->paginate(5);
-        if($request->ajax()){
-            return view('articles.article-pagination ',['articles'=>$articles]);
-        }
-        return view('articles.article ',['articles'=>$articles]);
+        $products = Products::where('siparisOzellik', 'like', '%' . $request->get('searchQuest') . '%')->get();
+        return json_encode($products);
     }
 }

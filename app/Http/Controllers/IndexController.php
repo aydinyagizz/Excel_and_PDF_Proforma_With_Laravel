@@ -17,6 +17,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Validator;
 use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Facades\Excel;
@@ -69,13 +70,14 @@ class IndexController extends BaseController
             'import_file' => 'required|file|mimes:xls,xlsx'
         ]);
 
-//        $icerikler = Excel::toCollection(new PostImport(), $request->file('import_file'));
-//        foreach ($icerikler[0] as $icerik){
-//
-//            if ($icerik[0] == '' || $icerik[1] == '' || $icerik[2] == '') {
-//                return Redirect::to('urunEkle')->withErrors('Hata! İçeriklerde boş alan bulunamaz');
-//            }
-//        };
+        $icerikler = Excel::toCollection(new PostImport(), $request->file('import_file'));
+        foreach ($icerikler[0] as $icerik){
+
+            if ($icerik[0] == '' || $icerik[1] == '' || $icerik[2] == '') {
+                return Redirect::to('urunEkle')->withErrors('Hata! İçeriklerde boş alan bulunamaz');
+            }
+        };
+
 
 
 //        $icerikler = Excel::toCollection(new PostImport(), $request->file('import_file'));
@@ -128,7 +130,8 @@ class IndexController extends BaseController
 
                 $data[] = [
                     'siparisOzellik' => $sheet->getCell($request->urunSutun . $row)->getValue(),
-                    'miktar' => $sheet->getCell($request->miktarSutun . $row)->getValue(),
+                    //'miktar' => $sheet->getCell($request->miktarSutun . $row)->getValue(),
+                    'miktar' => 1,
 //                    'birim' => $sheet->getCell( $request->birimSutun . $row )->getValue() ?? 'adet',
                     'birim' => 'adet',
                     'malzemeFiyati' => $sheet->getCell($request->malzemeFiyatSutun . $row)->getOldCalculatedValue() ?? $sheet->getCell($request->malzemeFiyatSutun . $row)->getValue(),
@@ -166,8 +169,15 @@ class IndexController extends BaseController
     }
 
 
-    public function export($id)
+    public function export($id, Request $request)
     {
+        if(session()->has('karOrani')){
+            $karOrani =  Session::get('karOrani',);
+        }
+        if(session()->has('karliUrunTutar')){
+            $karliUrunTutar =  Session::get('karliUrunTutar');
+        }
+
 //        Excel::store(new PostExport(), 'dgh.xls');
 //        return Excel::download(new PostExport(), 'dgh.xls');
 
@@ -192,12 +202,14 @@ class IndexController extends BaseController
         $spreadSheet->getActiveSheet()->getCell('D9')->setValue($faturaName['musteriAdSoyad']);
         $say = 0;
         foreach ($result as $key) {
-
+            if(session()->has('karliUrunTutar')){
+                $karliUrunTutar =  Session::get('karliUrunTutar');
+            }
             $spreadSheet->getActiveSheet()->getCell('C' . $excelBaslangic)->setValue($key['siparisOzellik']);
             $spreadSheet->getActiveSheet()->getCell('E' . $excelBaslangic)->setValue($key['miktar']);
             $spreadSheet->getActiveSheet()->getCell('F' . $excelBaslangic)->setValue($key['birim']);
-            $spreadSheet->getActiveSheet()->getCell('G' . $excelBaslangic)->setValue($key['malzemeFiyati']);
-            $spreadSheet->getActiveSheet()->getCell('H' . $excelBaslangic)->setValue(($key['miktar']) * ($key['malzemeFiyati']));
+            $spreadSheet->getActiveSheet()->getCell('G' . $excelBaslangic)->setValue((($key['miktar']) * ($key['malzemeFiyati']) + (($key['miktar']) * ($key['malzemeFiyati'])) * $karOrani/100));
+            $spreadSheet->getActiveSheet()->getCell('H' . $excelBaslangic)->setValue((($key['miktar']) * ($key['malzemeFiyati']) + (($key['miktar']) * ($key['malzemeFiyati'])) * $karOrani/100) );
             $excelBaslangic++;
             $say++;
 

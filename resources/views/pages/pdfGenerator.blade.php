@@ -76,7 +76,8 @@
     $sub_total = 0;
     foreach ($teklif as $teklifler) {
 
-        $sub_total += ((int)$teklifler->miktar * (int)$teklifler->malzemeFiyati);
+        //$sub_total += ((int)$teklifler->miktar * (int)$teklifler->malzemeFiyati);
+        $sub_total += $teklifler->miktar * ($teklifler->malzemeFiyati+ ($teklifler->malzemeFiyati * ($karOrani/100)));
     }
 
     $sub_total += (($TeklifYapanKisi->iscilik)+($TeklifYapanKisi->yol));

@@ -56,7 +56,7 @@
 
                     <div class="col-md-3">
                         <label class="text" for="malzemeFiyati">Malzeme Fiyatı</label>
-                        <input type="number" name="malzemeFiyati" class="form-control" placeholder="Malzeme Fiyatı" required value="{{$data['urunEdit']->malzemeFiyati}}">
+                        <input type="number" name="malzemeFiyati" step="0.01" class="form-control" placeholder="Malzeme Fiyatı"  required value="{{$data['urunEdit']->malzemeFiyati}}">
                     </div>
 
                     <div class="col-md-3">

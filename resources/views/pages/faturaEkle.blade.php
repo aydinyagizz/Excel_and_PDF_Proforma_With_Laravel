@@ -87,7 +87,7 @@
 
                         <div class="col-md-2" id="1">
                             <label class="text" for="malzemeFiyati">Malzeme Fiyatı</label>
-                            <input type="number" min="0" step="0.01" id="malzemeFiyati" {{ $user->roles[0]->name == 'Admin' ? '' : 'disabled'  }} name="malzemeFiyati[]" class="form-control"
+                            <input type="number" min="0" step="0.01" id="malzemeFiyati" {{ $user->roles[0]->name == 'Admin' ? '' : 'readonly'  }}  name="malzemeFiyati[]" class="form-control"
                                    placeholder="Malzeme Fiyatı" value="" required>
                         </div>
 
@@ -153,7 +153,8 @@
 
     <script>
 
-        var user = {!! auth()->user() !!};
+        {{--var user = {!! auth()->user() !!};--}}
+        {{--console.log(user.roles[0].name)--}}
 
         var id = 2;
 
@@ -163,7 +164,7 @@
             $('#button_pro').on('click', '.add', function () {
 
                 $(this).remove();
-                txt_box = '<div class="row" id="input_' + id + '"><div class="col-md-5"><div class="form-group"><label>Ürün Adı</label><select class="form-control select2 selectDiv "  id="siparisOzellik' + id + '" name="siparisOzellik[]" data-placeholder="Ürün Seçiniz" style="width: 100%;" tabindex="-1" aria-hidden="true" required>"<option selected>Seçiniz</option>@foreach($urun as $urunler)<option value="{{$urunler->id}}">{{$urunler->siparisOzellik}}</option>@endforeach"</select></div></div><div class="col-md-2"><label class="text" for="miktar">Miktar</label><input type="number" min="0" id="miktar' + id + '" name="miktar[]" class="form-control" placeholder="Miktar" required value=""></div><div class="col-md-2"><label class="text" for="birim">Birim</label><input type="text" id="birim' + id + '" name="birim[]" class="form-control" placeholder="Birim" required></div><div class="col-md-2"><label class="text" for="malzemeFiyati">Malzeme Fiyatı</label><input type="number" min="0" step="0.01" id="malzemeFiyati' + id + '" {{ $user->roles[0]->name == 'Admin' ? '' : 'disabled'  }} name="malzemeFiyati[]" class="form-control" placeholder="Malzeme Fiyatı" required></div><i class=" fa fa-trash remove" style="cursor: pointer"> Sil </i> <i class="fa fa-plus add right" style="cursor: pointer"> Satır Ekle </i></div>';
+                txt_box = '<div class="row" id="input_' + id + '"><div class="col-md-5"><div class="form-group"><label>Ürün Adı</label><select class="form-control select2 selectDiv "  id="siparisOzellik' + id + '" name="siparisOzellik[]" data-placeholder="Ürün Seçiniz" style="width: 100%;" tabindex="-1" aria-hidden="true" required>"<option selected>Seçiniz</option>@foreach($urun as $urunler)<option value="{{$urunler->id}}">{{$urunler->siparisOzellik}}</option>@endforeach"</select></div></div><div class="col-md-2"><label class="text" for="miktar">Miktar</label><input type="number" min="0" id="miktar' + id + '" name="miktar[]" class="form-control" placeholder="Miktar" required value=""></div><div class="col-md-2"><label class="text" for="birim">Birim</label><input type="text" id="birim' + id + '" name="birim[]" class="form-control" placeholder="Birim" required></div><div class="col-md-2"><label class="text" for="malzemeFiyati">Malzeme Fiyatı</label><input type="number" min="0" step="0.01" id="malzemeFiyati' + id + '" {{ $user->roles[0]->name == 'Admin' ? '' : 'readonly'  }} name="malzemeFiyati[]" class="form-control" placeholder="Malzeme Fiyatı" required></div><i class=" fa fa-trash remove" style="cursor: pointer"> Sil </i> <i class="fa fa-plus add right" style="cursor: pointer"> Satır Ekle </i></div>';
                 $("#button_pro").append(txt_box);
                 id++;
 
@@ -178,18 +179,20 @@
                         data: {id: urunler},
                         success: function (data) {
                             if ($.trim(data) != '') {
+                                var user = {!! auth()->user() !!};
 
                                 var miktarVar = 'miktar'+(id-1);
                                 var birimVar = 'birim'+(id-1);
                                 var malzemeFiyatiVar = 'malzemeFiyati'+(id-1);
+
                                 var karliMalzemeFiyati = (((data.urunDetay.malzemeFiyati) + (data.urunDetay.malzemeFiyati * (data.urunDetay.urunKar/100)))).toFixed(2);
-                                var iskontoluMalzemeFiyati = ((karliMalzemeFiyati - (karliMalzemeFiyati) * (user.iskontoKisiti/100))).toFixed(2);
+                                var iskontoluMalzemeFiyati = (karliMalzemeFiyati - (karliMalzemeFiyati * (user.iskontoKisiti/100))).toFixed(2);
 
                                 $('#'+miktarVar).val(data.urunDetay.miktar);
                                 $('#'+birimVar).val(data.urunDetay.birim);
-                                if(userRole == 'Admin') {
-                                    $('#' + malzemeFiyatiVar).val(karliMalzemeFiyati);
-                                }if(userRole == 'Kullanıcı') {
+                                    if(user.roles[0].name == 'Admin') {
+                                        $('#' + malzemeFiyatiVar).val(karliMalzemeFiyati);
+                                    }else if(user.roles[0].name == 'Kullanıcı') {
                                     $('#' + malzemeFiyatiVar).val(iskontoluMalzemeFiyati);
                                 }else{
                                     $('#' + malzemeFiyatiVar).val(iskontoluMalzemeFiyati);
@@ -237,7 +240,7 @@
     <script type="text/javascript">
 
         var user = {!! auth()->user() !!};
-        var userRole = '{!! auth()->user()->roles[0]->name !!}';
+
 
         $(document).ready(function () {
             // $('select[id=siparisOzellik]').change(function(){
@@ -257,6 +260,7 @@
                     data: { id: urun },
                     success:function(data){
                         if ($.trim(data) != '') {
+                            var user = {!! auth()->user() !!};
                             var karliMalzemeFiyati = (((data.urunDetay.malzemeFiyati) + (data.urunDetay.malzemeFiyati * (data.urunDetay.urunKar/100)))).toFixed(2);
                             console.log("karlı fiyat "+karliMalzemeFiyati);
                             var iskontoluMalzemeFiyati = ((karliMalzemeFiyati - (karliMalzemeFiyati) * (user.iskontoKisiti/100))).toFixed(2);
@@ -264,9 +268,9 @@
 
                             $('#miktar').val(data.urunDetay.miktar);
                             $('#birim').val(data.urunDetay.birim);
-                            if(userRole == 'Admin'){
+                            if(user.roles[0].name == 'Admin'){
                                 $('#malzemeFiyati').val(karliMalzemeFiyati);
-                            }if(userRole == 'Kullanıcı'){
+                            }else if(user.roles[0].name == 'Kullanıcı'){
                                 $('#malzemeFiyati').val(iskontoluMalzemeFiyati);
                             } else {
                                 $('#malzemeFiyati').val(iskontoluMalzemeFiyati);

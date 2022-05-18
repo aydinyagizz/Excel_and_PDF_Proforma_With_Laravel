@@ -15,12 +15,28 @@
         <!-- title row -->
         <div class="row">
             <div class="col-xs-12">
+                @role('Admin')
                 <h2 class="page-header">
                     {{--                    <i class="fa fa-globe"></i> DGH--}}
+
                     <img width="100" src=" {{asset("assets/dist/img/dgh1.png")}}" alt="">
+
                     <small class="pull-right">Tarih: {{date('d/m/Y')}}</small>
+
                 </h2>
+                @endrole
+                @role('Kullanıcı')
+                <h2 class="page-header">
+                    {{--                    <i class="fa fa-globe"></i> DGH--}}
+
+                    <img width="100" src=" " alt="">
+
+                    <small class="pull-right">Tarih: {{date('d/m/Y')}}</small>
+
+                </h2>
+                @endrole
             </div>
+
             <!-- /.col -->
         </div>
         <!-- info row -->
@@ -61,12 +77,17 @@
     <?php
 
     $sub_total = 0;
-    foreach ($teklif as $teklifler) {
 
-        $sub_total += ((int)$teklifler->miktar * (int)$teklifler->malzemeFiyati);
+    foreach ($teklif as $teklifler) {
+//echo '<pre>';
+//print_r($teklifler->miktar * ($teklifler->malzemeFiyati+ ($teklifler->malzemeFiyati * ($karOrani/100))));
+//echo '<pre>';
+        //$sub_total += ((int)$teklifler->miktar * (int)$teklifler->malzemeFiyati);
+        $sub_total += $teklifler->miktar * ($teklifler->malzemeFiyati + ($teklifler->malzemeFiyati * ($karOrani / 100)));
 
     }
     $sub_total += (($TeklifYapanKisi->iscilik) + ($TeklifYapanKisi->yol));
+    //dd($karOrani)
 
     ?>
 
@@ -83,8 +104,9 @@
                         <th>Ürün Adı</th>
                         <th>Miktar</th>
                         <th>Birim</th>
-                        {{--                        <th>Malzeme Fiyatı</th>--}}
-                        {{--                        <th>Ürün Tutar</th>--}}
+                        <th>Malzeme Fiyatı</th>
+                        <th>Ürün Tutar</th>
+                        <th>Karlı Ürün Tutar</th>
                     </tr>
 
                     </thead>
@@ -94,14 +116,17 @@
                             <td>{{$teklif->siparisOzellik}}</td>
                             <td>{{$teklif->miktar}}</td>
                             <td>{{$teklif->birim}}</td>
-                            {{--                            <td>{{$teklif->malzemeFiyati}}</td>--}}
-                            {{--                            <td>{{number_format((($teklif->miktar)*($teklif->malzemeFiyati)),2)}} $</td>--}}
+                            <td>{{$teklif->malzemeFiyati}}</td>
+                            <td>{{number_format((($teklif->miktar)*($teklif->malzemeFiyati)),2)}} $</td>
+                            <td>{{number_format($teklif->miktar * ($teklif->malzemeFiyati+ ($teklif->malzemeFiyati * ($karOrani/100))),2)}}
+                                $
+                            </td>
                         </tr>
                     @endforeach
 
                     <tr>
                         <td>Anahtar Teslim Montaj ve Test
-{{--                            : {{number_format(($TeklifYapanKisi->iscilik) + ($TeklifYapanKisi->yol), 2)}} $--}}
+                            {{--                            : {{number_format(($TeklifYapanKisi->iscilik) + ($TeklifYapanKisi->yol), 2)}} $--}}
                         </td>
                         <td>1</td>
                         <td>adet</td>
@@ -132,22 +157,31 @@
                     <table class="table">
                         <tbody>
 
-                        @php(number_format( $karliTutar = (($sub_total))+(($sub_total)*($TeklifYapanKisi->yuzdelikKar/100)),2) )
+                        {{--                        @php(number_format( $karliTutar = (($sub_total))+(($sub_total)*($TeklifYapanKisi->yuzdelikKar/100)),2) )--}}
+                        @php(number_format( $karliTutar = (($sub_total))+(($sub_total)*($karOrani/100)),2) )
 
+                        <tr>
+                            <th>Toplam Tutar <small>(Karlı ürün tutar + yol + işcilik)</small></th>
+
+                            <td>{{ number_format( $sub_total,2)}}</td>
+                        </tr>
 
                         <tr>
                             <th>KDV</th>
                             <td>%18</td>
                         </tr>
+
                         <tr>
 
-                            @php(number_format($kdvTutar = $karliTutar * (18/100), 2))
+{{--                            @php(number_format($kdvTutar = $karliTutar * (18/100), 2))--}}
+                            @php(number_format($kdvTutar = $sub_total * (18/100), 2))
 
                         </tr>
                         <tr>
 
                             <th>Toplam:</th>
-                            <td>{{ number_format(( $toplam = $karliTutar + $kdvTutar), 2) }} $</td>
+{{--                            <td>{{ number_format(( $toplam = $karliTutar + $kdvTutar), 2) }} $</td>--}}
+                            <td>{{ number_format(( $toplam = $sub_total + $kdvTutar), 2) }} $</td>
 
                         </tr>
                         </tbody>

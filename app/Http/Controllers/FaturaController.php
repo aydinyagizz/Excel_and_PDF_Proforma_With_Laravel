@@ -18,9 +18,15 @@ class FaturaController extends Controller
     {
 //        $num_str = sprintf("%06d", mt_rand(1, 999999));
 //        dd($num_str);
+$userId = Auth::user()->id;
 
-        $fatura = Fatura::orderBy('id', 'desc')->paginate(10);
-        return view('pages.faturaListele', compact('fatura'));
+        $data = [
+            'fatura' => Fatura::orderBy('id', 'desc')->paginate(10),
+            //'kullaniciFaturalari' => Fatura::where('user_id', '==', Auth::user()->id)->orderBy('id', 'desc')->paginate(10),
+            'kullaniciFaturalari' => DB::table('faturalar')->where('user_id', $userId)->orderBy('id', 'desc')->paginate(10),
+            ];
+
+        return view('pages.faturaListele', $data);
     }
 
     public function faturaDetayGetir(Request $request){
@@ -154,7 +160,7 @@ class FaturaController extends Controller
         $faturaUpdate = Fatura::find($request->id);
         $faturaUpdate->musteriAdSoyad = $request->musteriAdSoyad;
         $faturaUpdate->save();
-        return redirect()->route('admin.faturaEkle');
+        return redirect()->route('admin.faturaListele');
 
     }
 

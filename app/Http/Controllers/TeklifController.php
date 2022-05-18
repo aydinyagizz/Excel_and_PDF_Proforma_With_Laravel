@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
 use SebastianBergmann\CodeUnit\Mapper;
 use function GuzzleHttp\Promise\all;
@@ -101,11 +102,19 @@ class TeklifController extends Controller
 
     public function teklifPdf($id)
     {
+        if(session()->has('karOrani')){
+            $karOrani =  Session::get('karOrani',);
+        }
+
+//        if(session()->has('karliUrunTutar')){
+//            $karliUrunTutar =  Session::get('karliUrunTutar');
+//        }
         $data = [
             'teklif' => Teklif::all()->where('fatura_id', '==', $id),
             'Id' => $id,
             'TeklifYapanKisi' => Fatura::all()->where('id', '==', $id)->first(),
-
+            'karOrani' =>$karOrani,
+            //'karliUrunTutar' =>$karliUrunTutar
         ];
 
         return view('pages.teklifPdf', $data);
@@ -113,15 +122,19 @@ class TeklifController extends Controller
 
     public function pdfDownload($Id)
     {
+        if(session()->has('karOrani')){
+            $karOrani =  Session::get('karOrani',);
+        }
         $data = [
             //'teklif' => DB::table("posts")->get()->where('id', $Id),
             'teklif' => Teklif::all()->where('fatura_id', '==', $Id),
             'Id' => $Id,
             'TeklifYapanKisi' => Fatura::find($Id),
+            'karOrani' =>$karOrani,
         ];
 
         $pdf = PDF::loadView('pages.pdfGenerator', $data);
-        return $pdf->download($data['TeklifYapanKisi']->musteriAdSoyad . $data['TeklifYapanKisi']->faturaNo.'.pdf');
+        return $pdf->download($data['TeklifYapanKisi']->musteriAdSoyad .' '. $data['TeklifYapanKisi']->faturaNo.'.pdf');
 
     }
 

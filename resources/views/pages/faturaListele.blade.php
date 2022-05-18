@@ -38,10 +38,13 @@
                             <th></th>
                         </tr>
                         </thead>
+
+                        @role('Admin')
                         <tbody id="myTable">
                         @php
                             $say = ($fatura->currentpage()-1)* $fatura->perpage() + 1;
                         @endphp
+
                         @foreach($fatura as $faturaItem)
 
                             <tr>
@@ -57,10 +60,43 @@
 
                         @endforeach
                         </tbody>
+@endrole
+                        @role('Kullanıcı')
+                        <tbody id="myTable">
+
+                        @php
+                            $say = ($kullaniciFaturalari->currentpage()-1)* $kullaniciFaturalari->perpage() + 1;
+                        @endphp
+                        @foreach($kullaniciFaturalari as $kullaniciFaturaItem)
+
+
+                            <tr>
+                                <td><b>{{$say++}}</b></td>
+                                <td> {{$kullaniciFaturaItem->musteriAdSoyad}} </td>
+                                <td> {{$kullaniciFaturaItem->faturaNo}} </td>
+{{--                                <td> {{($kullaniciFaturaItem->created_at)->format('d/m/Y')}} </td>--}}
+                                <td> {{ Carbon\Carbon::parse($kullaniciFaturaItem->created_at)->format('d/m/Y') }} </td>
+                                <td><a href="{{url('faturaEdit/'.$kullaniciFaturaItem->id)}}"><i class="fa fa-edit"></i></a></td>
+                                <td><a href="{{url('faturaDelete/'.$kullaniciFaturaItem->id)}}"><i class="fa fa-trash-o"></i>
+                                    </a></td>
+                                <td><a href="{{url('teklifPdf/'.$kullaniciFaturaItem->id)}}"><i class="fa fa-eye"></i> </a></td>
+                            </tr>
+
+                        @endforeach
+                        @endrole
+                        </tbody>
                     </table>
+                    @role('Admin')
                     <div class="text-center">
                         {!! $fatura->links() !!}
                     </div>
+                    @endrole
+
+                    @role('Kullanıcı')
+                    <div class="text-center">
+                        {!! $kullaniciFaturalari->links() !!}
+                    </div>
+                    @endrole
                 </li>
             </ul>
         </div>
